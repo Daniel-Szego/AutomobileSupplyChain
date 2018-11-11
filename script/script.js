@@ -177,7 +177,7 @@ async function createPartTransaction(tx) {  // eslint-disable-line no-unused-var
   
   await carPartReg.add(carPart);      
   
-  // emitting ObjectIssued event
+  // emitting CarPartCreated event
 
   let carPartCreatedEvent = factory.newEvent(namespace, 'CarPartCreated');
   carPartCreatedEvent.carPart = carPart;
@@ -193,9 +193,27 @@ async function createPartTransaction(tx) {  // eslint-disable-line no-unused-var
  */
 async function TransferPartTransaction(tx) {  // eslint-disable-line no-unused-vars
   let carPart = tx.carPart;
-  let supplier = tx.atStage;
+  let supplier = carPart.atStage;
   let manufacturer = tx.manufacturer; 
   
+  const factory = getFactory(); 
+  
+  const carPartReg = await getAssetRegistry(namespace + '.CarPart'); 
+  carPart.atStage = manufacturer;
+  carPartReg.update(carPart);
+  
+  const manufacturerReg = await getAssetRegistry(namespace + '.Manufacturer'); 
+  manufacturer.partStorage.push(carPart);
+  manufacturerReg.update(manufacturer);
+  
+  // emitting CarPartTransferred event
+  
+  let carPartTransferredEvent = factory.newEvent(namespace, 'CarPartTransferred');
+  carPartTransferredEvent.carPart = carPart;
+  carPartTransferredEvent.from = supplier;
+  carPartTransferredEvent.to = manufacturer;
+  carPartTransferredEvent.date = new Date();
+  await emit(carPartTransferredEvent);  	
 }
 
 /**
@@ -230,5 +248,6 @@ async function SellCarTransaction(tx) {  // eslint-disable-line no-unused-vars
   let dealer = tx.dealer;
   
 }
+
 
 
