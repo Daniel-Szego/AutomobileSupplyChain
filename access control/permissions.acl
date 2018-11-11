@@ -13,63 +13,15 @@
  */
 
 /**
- * Initial access control list for the LNG supply chain.
+ * Control list for the automobile supply chain.
  */
-
-rule GasFieldStateCanNotManageParticipants {
-    description: "Members of the GasFieldState roles can not manage participants"
-    participant: "org.supplychain.LNG.model.GasFieldState"
-    operation: CREATE, UPDATE, DELETE
-    resource: "org.supplychain.LNG.model.GHGProductionState"
-    action: DENY
-}
-
-rule GasFieldStateCanOnlyCreate {
-    description: "Members of the GasFieldState roles can only create and read asset"
-    participant: "org.supplychain.LNG.model.GasFieldState"
-    operation: UPDATE, DELETE
-    resource: "org.supplychain.LNG.model.GHGcarrierAsset"
-    action: DENY
-}
-
-rule ProductionStateCanNotManageParticipants {
-    description: "Members of the ProductionState roles can not manage participants"
-    participant: "org.supplychain.LNG.model.ProductionState"
-    operation: CREATE, UPDATE, DELETE
-    resource: "org.supplychain.LNG.model.GHGProductionState"
-    action: DENY
-}
-
-rule ProductionStateCanOnlyUpdate {
-    description: "Members of the production state role can only update and read an asset"
-    participant: "org.supplychain.LNG.model.ProductionState"
-    operation: UPDATE, DELETE
-    resource: "org.supplychain.LNG.model.GHGcarrierAsset"
-    action: DENY
-}
-
-rule LNGToPipelineStateCanNotManageParticipants {
-    description: "Members of the LNGToPipelineState roles can not manage participants"
-    participant: "org.supplychain.LNG.model.LNGToPipelineState"
-    operation: CREATE, UPDATE, DELETE
-    resource: "org.supplychain.LNG.model.GHGProductionState"
-    action: DENY
-}
-
-rule LNGToPipelineStateCanNotCreate {
-    description: "Members of the LNGToPipelineState role can not create an asset"
-    participant: "org.supplychain.LNG.model.LNGToPipelineState"
-    operation: CREATE
-    resource: "org.supplychain.LNG.model.GHGcarrierAsset"
-    action: DENY
-}
-
-rule EverybodyCanDOEverything {
-    description: "Allow all participants can do everything"
+rule EverybodyCanDoEverything {
+    description: "Allow everybody to do everyhing - do not use in production environment"
     participant: "**"
     operation: ALL
     resource: "**"
     action: ALLOW
 }
+
 
 

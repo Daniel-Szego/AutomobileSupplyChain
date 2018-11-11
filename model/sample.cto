@@ -102,10 +102,10 @@ asset Car extends CARAbstratcAsset {
  * TRANSACTIONS
  */
 
-transaction CreateTestData {
+transaction CreateTestDataTransaction {
 }
 
-transaction DeleteAllData {
+transaction DeleteAllDataTransaction {
 }
 
 transaction CreatePartTransaction {
@@ -169,3 +169,6 @@ event CarSold {
   --> Dealer dealer
   o DateTime date
 }
+
+
+
