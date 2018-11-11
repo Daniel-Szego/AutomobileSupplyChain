@@ -1,0 +1,75 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Initial access control list for the LNG supply chain.
+ */
+
+rule GasFieldStateCanNotManageParticipants {
+    description: "Members of the GasFieldState roles can not manage participants"
+    participant: "org.supplychain.LNG.model.GasFieldState"
+    operation: CREATE, UPDATE, DELETE
+    resource: "org.supplychain.LNG.model.GHGProductionState"
+    action: DENY
+}
+
+rule GasFieldStateCanOnlyCreate {
+    description: "Members of the GasFieldState roles can only create and read asset"
+    participant: "org.supplychain.LNG.model.GasFieldState"
+    operation: UPDATE, DELETE
+    resource: "org.supplychain.LNG.model.GHGcarrierAsset"
+    action: DENY
+}
+
+rule ProductionStateCanNotManageParticipants {
+    description: "Members of the ProductionState roles can not manage participants"
+    participant: "org.supplychain.LNG.model.ProductionState"
+    operation: CREATE, UPDATE, DELETE
+    resource: "org.supplychain.LNG.model.GHGProductionState"
+    action: DENY
+}
+
+rule ProductionStateCanOnlyUpdate {
+    description: "Members of the production state role can only update and read an asset"
+    participant: "org.supplychain.LNG.model.ProductionState"
+    operation: UPDATE, DELETE
+    resource: "org.supplychain.LNG.model.GHGcarrierAsset"
+    action: DENY
+}
+
+rule LNGToPipelineStateCanNotManageParticipants {
+    description: "Members of the LNGToPipelineState roles can not manage participants"
+    participant: "org.supplychain.LNG.model.LNGToPipelineState"
+    operation: CREATE, UPDATE, DELETE
+    resource: "org.supplychain.LNG.model.GHGProductionState"
+    action: DENY
+}
+
+rule LNGToPipelineStateCanNotCreate {
+    description: "Members of the LNGToPipelineState role can not create an asset"
+    participant: "org.supplychain.LNG.model.LNGToPipelineState"
+    operation: CREATE
+    resource: "org.supplychain.LNG.model.GHGcarrierAsset"
+    action: DENY
+}
+
+rule EverybodyCanDOEverything {
+    description: "Allow all participants can do everything"
+    participant: "**"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+
