@@ -53,12 +53,14 @@ enum CarTypeEnum {
 
 participant Manufacturer extends SupplyChainActor {
   o CarTypeEnum carType
+  --> CarPart[] partStorage 
+  --> Car[] carStorage
 }
 
 participant Dealer extends SupplyChainActor {
   o CarTypeEnum[] carType
+  --> Car[] carStorage
 }
-
 
 /**
  * ASSETS
@@ -92,7 +94,7 @@ enum ColorEnum {
 
 asset Car extends CARAbstratcAsset {
   o CarTypeEnum carType
-  o ColorEnum color
+  o ColorEnum color optional
   o String license optional
 }
 
@@ -100,17 +102,70 @@ asset Car extends CARAbstratcAsset {
  * TRANSACTIONS
  */
 
-transaction SampleTransaction {
-  --> SampleAsset asset
-  o String newValue
+transaction CreateTestData {
 }
+
+transaction DeleteAllData {
+}
+
+transaction CreatePartTransaction {
+  o CarPartTypeEnum partType
+  o Integer amount
+}
+
+transaction TransferPartTransaction {
+  --> CarPart carPart
+  --> Supplier supplier
+  --> Manufacturer manufacturer
+}
+
+transaction CreateCarTransaction {
+  --> Manufacturer manufacturer
+}
+
+transaction TransferCarTransaction {
+  --> Car car
+  --> Manufacturer manufacturer
+  --> Dealer dealer
+}
+
+transaction SellCarTransaction {
+  --> Car car
+  --> Dealer dealer
+}
+
 
 /**
  * EVENTS
  */
 
-event SampleEvent {
-  --> SampleAsset asset
-  o String oldValue
-  o String newValue
+event CarPartCreated {
+  --> CarPart carPart
+  o DateTime date
+}
+
+event CarPartTransferred {
+  --> CarPart carPart
+  --> Supplier from
+  --> Manufacturer to
+  o DateTime date
+}
+
+event CarCreated {
+  --> Car car
+  --> Manufacturer at
+  o DateTime date
+}
+
+event CarTransported {
+  --> Car car
+  --> Manufacturer from
+  --> Dealer to
+  o DateTime date
+}
+
+event CarSold {
+  --> Car car
+  --> Dealer dealer
+  o DateTime date
 }
