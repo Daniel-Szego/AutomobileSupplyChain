@@ -23,6 +23,94 @@ let namespace = "org.automobilesupplychain.basic";
  */
 async function createTestDataTransaction(tx) {  // eslint-disable-line no-unused-vars
 
+    console.log('init test data');
+
+    console.log('Creating a Supplier');  
+    const factory = getFactory(); 
+	
+  	// adding supplier 1
+    const supplierReg = await getParticipantRegistry(namespace + '.Supplier');   
+    const supplier = await factory.newResource(namespace, 'Supplier', "1");
+  
+    supplier.name = "supplier 1";
+    supplier.supplyerType = "TIER_1_SUPPLIER"; 
+    supplier.GHG = 100;
+    const newAddress = await factory.newConcept(namespace, 'Address');
+	newAddress.country = "Bejing";
+	newAddress.city = "China";
+	newAddress.street = "Xia Mo Street";
+    newAddress.hauseNr = 16;
+  	supplier.address = newAddress;
+  
+    await supplierReg.add(supplier);       
+
+  	// adding supplier 2
+    const supplier2Reg = await getParticipantRegistry(namespace + '.Supplier');   
+    const supplier2 = await factory.newResource(namespace, 'Supplier', "2");
+  
+    supplier2.name = "supplier 2";
+    supplier2.supplyerType = "TIER_2_SUPPLIER"; 
+    supplier2.GHG = 100;
+    const newAddress2 = await factory.newConcept(namespace, 'Address');
+	newAddress2.country = "Bejing";
+	newAddress2.city = "China";
+	newAddress2.street = "Xia Mo Street";
+    newAddress2.hauseNr = 16;
+  	supplier2.address = newAddress2;
+  
+    await supplier2Reg.add(supplier2);       
+
+  	// adding supplier 3
+    const supplier3Reg = await getParticipantRegistry(namespace + '.Supplier');   
+    const supplier3 = await factory.newResource(namespace, 'Supplier', "3");
+  
+    supplier3.name = "supplier 3";
+    supplier3.supplyerType = "TIER_3_SUPPLIER"; 
+    supplier3.GHG = 100;
+    const newAddress3 = await factory.newConcept(namespace, 'Address');
+	newAddress3.country = "Bejing";
+	newAddress3.city = "China";
+	newAddress3.street = "Xia Mo Street";
+    newAddress3.hauseNr = 16;
+  	supplier3.address = newAddress3;
+  
+    await supplier3Reg.add(supplier3);       
+  
+  	// adding Manufacturer
+    const manufacturerReg = await getParticipantRegistry(namespace + '.Manufacturer');   
+    const manufacturer = await factory.newResource(namespace, 'Manufacturer', "1");
+  
+    manufacturer.name = "Manufacturer";
+    manufacturer.carType = "AUDI"; 
+    manufacturer.GHG = 100;
+    manufacturer.partStorage = new Array();
+    manufacturer.carStorage = new Array();  
+    const newAddress4 = await factory.newConcept(namespace, 'Address');
+	newAddress4.country = "Bejing";
+	newAddress4.city = "China";
+	newAddress4.street = "Xia Mo Street";
+    newAddress4.hauseNr = 16;
+  	manufacturer.address = newAddress4;
+  
+    await manufacturerReg.add(manufacturer);       
+  
+  	// adding Dealer
+    const dealerReg = await getParticipantRegistry(namespace + '.Dealer');   
+    const dealer = await factory.newResource(namespace, 'Dealer', "1");
+  	dealer.carType = new Array();
+    dealer.carStorage = new Array();
+    dealer.name = "Dealer";
+    dealer.GHG = 100;
+    const newAddress5 = await factory.newConcept(namespace, 'Address');
+	newAddress5.country = "Bejing";
+	newAddress5.city = "China";
+	newAddress5.street = "Xia Mo Street";
+    newAddress5.hauseNr = 16;
+  	dealer.address = newAddress5;
+  
+    await dealerReg.add(dealer);       
+    
+    console.log('end test data');  
 }
 
 /**
@@ -32,6 +120,27 @@ async function createTestDataTransaction(tx) {  // eslint-disable-line no-unused
  */
 async function deleteAllDataTransaction(tx) {  // eslint-disable-line no-unused-vars
 
+    // deleting assets
+    const carReg = await getAssetRegistry(namespace + '.Car'); 
+    let cars = await carReg.getAll();
+    await carReg.removeAll(cars);
+
+    const carPartReg = await getAssetRegistry(namespace + '.CarPart'); 
+    let carPart = await carPartReg.getAll();
+    await carPartReg.removeAll(carPart);
+
+  	// deleting participants
+    const supplierReg = await getParticipantRegistry(namespace + '.Supplier');
+    let suppliers = await supplierReg.getAll();
+    await supplierReg.removeAll(suppliers);
+    
+    const manufacturerReg = await getParticipantRegistry(namespace + '.Manufacturer');
+    let manufacturer = await manufacturerReg.getAll();
+    await manufacturerReg.removeAll(manufacturer);
+
+    const dealerReg = await getParticipantRegistry(namespace + '.Dealer');
+    let dealer = await dealerReg.getAll();
+    await dealerReg.removeAll(dealer);
 }
 
 /**
@@ -89,6 +198,4 @@ async function SellCarTransaction(tx) {  // eslint-disable-line no-unused-vars
   let dealer = tx.dealer;
   
 }
-
-
 
