@@ -13,38 +13,9 @@
  */
 
 /**
- * Experiental implementation of a production chain for LNG.
+ * Sample business network for automobile supply chain and assembly
  */
-
-namespace org.supplychain.LNG.model
-
-/**
- * ASSETS
- */
-
-enum AssetStatus {
-  o CREATED
-  o IN_PROCESS
-  o READY
-}
-
-abstract asset GHGcarrierAsset identified by assetId {
-  o String assetId
-  o AssetStatus assetStatus
-  o Double aggregatedGHG
-  --> GHGProductionState atState
-}
-
-abstract asset PhisicalAsset extends GHGcarrierAsset {
-  o Double amount
-}
-
-abstract asset LiquidAsset extends GHGcarrierAsset {
-  o Double amount
-}
-
-asset LNG extends LiquidAsset {
-}
+namespace org.automobilesupplychain.basic
 
 /**
  * PARTICIPANTS
@@ -57,69 +28,89 @@ concept Address {
   o Integer hauseNr optional
 }
 
-abstract participant GHGProductionState identified by stateId {
-  o String stateId
-  o String stateName
-  o Address address optional
-  o Double GHG 
-  --> GHGProductionState[] stateFrom
+abstract participant SupplyChainActor identified by id {
+  o String id
+  o String name
+  o Integer GHG
+  o Address address
 }
 
-// any kind of a state
-participant ProductionState extends GHGProductionState {
-  
+enum SupplyerTypeEnum {
+  o TIER_1_SUPPLIER
+  o TIER_2_SUPPLIER
+  o TIER_3_SUPPLIER
 }
 
-// start state
-participant GasFieldState extends GHGProductionState {
-  
+participant Supplier extends SupplyChainActor {
+  o SupplyerTypeEnum supplyerType
 }
 
-// end state
-participant LNGToPipelineState extends GHGProductionState {
-  
+enum CarTypeEnum {
+  o AUDI
+  o BMW
+  o VW
+}
+
+participant Manufacturer extends SupplyChainActor {
+  o CarTypeEnum carType
+}
+
+participant Dealer extends SupplyChainActor {
+  o CarTypeEnum[] carType
+}
+
+
+/**
+ * ASSETS
+ */
+
+abstract asset CARAbstratcAsset identified by id {
+  o String id
+  --> SupplyChainActor atStage
+}
+
+enum CarPartTypeEnum { 
+  o WHEEL
+  o ENGINE
+  o CHASSIS
+  o BODY
+  o WINDSHIELD
+}
+
+asset CarPart extends CARAbstratcAsset {
+  o Integer amount
+  o CarPartTypeEnum partType
+}
+
+enum ColorEnum {
+  o WHITE
+  o BLACK 
+  o BLUE
+  o YELLOW
+  o GREY
+}
+
+asset Car extends CARAbstratcAsset {
+  o CarTypeEnum carType
+  o ColorEnum color
+  o String license optional
 }
 
 /**
- * TRANSACTION
+ * TRANSACTIONS
  */
 
-transaction InitTestData {
-}
-
-transaction ClearData {
-}
-
-transaction ChangeState {
-  --> GHGcarrierAsset assetToTransfer
-  --> GHGProductionState fromState
-  --> GHGProductionState toState
-}
-
-transaction Create {
-  --> GasFieldState gasFieldState
-}
-
-transaction ToPipieline {
-  --> GHGcarrierAsset assetToPipeline  
-  --> LNGToPipelineState pipeLineState
+transaction SampleTransaction {
+  --> SampleAsset asset
+  o String newValue
 }
 
 /**
  * EVENTS
  */
 
-event AssetCreated {
-  --> GHGcarrierAsset gHGcarrierAsset
-  o Double creationGHG
-}
-
-event AssetStateChanged {
-  --> GHGcarrierAsset gHGcarrierAsset
-  o Double transferGHG
-}
-
-event AssetSentToPipeline {
-  --> GHGcarrierAsset gHGcarrierAsset
-  o Double sellingGHG
+event SampleEvent {
+  --> SampleAsset asset
+  o String oldValue
+  o String newValue
 }
