@@ -151,7 +151,39 @@ async function deleteAllDataTransaction(tx) {  // eslint-disable-line no-unused-
 async function createPartTransaction(tx) {  // eslint-disable-line no-unused-vars
   let partType = tx.partType;
   let amount = tx.amount;
+  let atStage = tx.atStage;
   
+  if (amount < 1) {
+  	throw new Error("The amount to be created must be greater than zero");
+  }
+  
+  const factory = getFactory(); 
+
+  const carPartReg = await getAssetRegistry(namespace + '.CarPart');   
+
+  // getting next id
+  let existingCarParts = await carPartReg.getAll();
+  let numberOfCarParts = 0;
+  
+  await existingCarParts.forEach(function (carParts) {
+    numberOfCarParts ++;
+  });
+  numberOfCarParts ++; 	
+
+  const carPart = await factory.newResource(namespace, 'CarPart', numberOfCarParts.toString());
+  carPart.partType = partType;
+  carPart.amount = amount;
+  carPart.atStage = atStage;
+  
+  await carPartReg.add(carPart);      
+  
+  // emitting ObjectIssued event
+
+  let carPartCreatedEvent = factory.newEvent(namespace, 'CarPartCreated');
+  carPartCreatedEvent.carPart = carPart;
+  carPartCreatedEvent.supplier = atStage;
+  carPartCreatedEvent.date = new Date();
+  await emit(carPartCreatedEvent);  	  
 }
 
 /**
@@ -161,7 +193,7 @@ async function createPartTransaction(tx) {  // eslint-disable-line no-unused-var
  */
 async function TransferPartTransaction(tx) {  // eslint-disable-line no-unused-vars
   let carPart = tx.carPart;
-  let supplier = tx.supplier;
+  let supplier = tx.atStage;
   let manufacturer = tx.manufacturer; 
   
 }
@@ -198,4 +230,5 @@ async function SellCarTransaction(tx) {  // eslint-disable-line no-unused-vars
   let dealer = tx.dealer;
   
 }
+
 
