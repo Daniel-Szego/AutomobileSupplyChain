@@ -40,7 +40,9 @@ async function deleteAllDataTransaction(tx) {  // eslint-disable-line no-unused-
  * @transaction
  */
 async function createPartTransaction(tx) {  // eslint-disable-line no-unused-vars
-
+  let partType = tx.partType;
+  let amount = tx.amount;
+  
 }
 
 /**
@@ -49,7 +51,10 @@ async function createPartTransaction(tx) {  // eslint-disable-line no-unused-var
  * @transaction
  */
 async function TransferPartTransaction(tx) {  // eslint-disable-line no-unused-vars
-
+  let carPart = tx.carPart;
+  let supplier = tx.supplier;
+  let manufacturer = tx.manufacturer; 
+  
 }
 
 /**
@@ -58,7 +63,8 @@ async function TransferPartTransaction(tx) {  // eslint-disable-line no-unused-v
  * @transaction
  */
 async function CreateCarTransaction(tx) {  // eslint-disable-line no-unused-vars
-
+   let manufacturer = tx.manufacturer;
+  
 }
 
 /**
@@ -67,7 +73,10 @@ async function CreateCarTransaction(tx) {  // eslint-disable-line no-unused-vars
  * @transaction
  */
 async function TransferCarTransaction(tx) {  // eslint-disable-line no-unused-vars
-
+  let car = tx.car;
+  let manufacturer = tx.manufacturer;
+  let dealer = tx.dealer;
+  
 }
 
 /**
@@ -76,7 +85,10 @@ async function TransferCarTransaction(tx) {  // eslint-disable-line no-unused-va
  * @transaction
  */
 async function SellCarTransaction(tx) {  // eslint-disable-line no-unused-vars
-
+  let car = tx.car;
+  let dealer = tx.dealer;
+  
 }
+
 
 
