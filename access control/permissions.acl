@@ -15,13 +15,110 @@
 /**
  * Control list for the automobile supply chain.
  */
-rule EverybodyCanDoEverything {
+
+rule SupplierCanNotManageManufacturer {
+    description: "Members of the Supplier roles can not manage Manufacturer participants"
+    participant: "org.automobilesupplychain.basic.Supplier"
+    operation: CREATE, UPDATE, DELETE
+	resource: "org.automobilesupplychain.basic.Manufacturer" 
+    action: DENY
+}
+
+rule SupplierCanNotManageDealer {
+    description: "Members of the Supplier roles can not manage Dealer participants"
+    participant: "org.automobilesupplychain.basic.Supplier"
+    operation: CREATE, UPDATE, DELETE
+	resource: "org.automobilesupplychain.basic.Dealer"
+    action: DENY
+}
+
+rule SupplierCanNotDeleteParts {
+    description: "Members of the Supplier can not delete the parts"
+    participant: "org.automobilesupplychain.basic.Supplier"
+    operation: DELETE
+	resource: "org.automobilesupplychain.basic.CarPart"
+    action: DENY
+}
+
+rule SupplierCanOnlyReadCars {
+    description: "Members of the Supplier can only read cars"
+    participant: "org.automobilesupplychain.basic.Supplier"
+    operation: CREATE, UPDATE, DELETE
+	resource: "org.automobilesupplychain.basic.Car"
+    action: DENY
+}
+
+
+
+rule ManufacturerCanNotManageSupplier {
+    description: "Members of the Manufacturer roles can not manage Supplier participants"
+    participant: "org.automobilesupplychain.basic.Manufacturer"
+    operation: CREATE, UPDATE, DELETE
+	resource: "org.automobilesupplychain.basic.Supplier" 
+    action: DENY
+}
+
+rule ManufacturerCanNotManageDealer {
+    description: "Members of the Manufacturer roles can not manage Dealer participants"
+    participant: "org.automobilesupplychain.basic.Manufacturer"
+    operation: CREATE, UPDATE, DELETE
+	resource: "org.automobilesupplychain.basic.Dealer" 
+    action: DENY
+}
+
+rule ManufacturerCanNotCreateParts {
+    description: "Members of the Manufacturer can not create the parts"
+    participant: "org.automobilesupplychain.basic.Manufacturer"
+    operation: CREATE
+	resource: "org.automobilesupplychain.basic.CarPart"
+    action: DENY
+}
+
+rule ManufacturerCanNotDeleteCars {
+    description: "Members of the Manufacturer can not delete cars"
+    participant: "org.automobilesupplychain.basic.Manufacturer"
+    operation: DELETE
+	resource: "org.automobilesupplychain.basic.Car"
+    action: DENY
+}
+
+
+rule DealerCanNotManageSupplier {
+    description: "Members of the Delaer roles can not manage Supplier participants"
+    participant: "org.automobilesupplychain.basic.Dealer"
+    operation: CREATE, UPDATE, DELETE
+	resource: "org.automobilesupplychain.basic.Supplier" 
+    action: DENY
+}
+
+rule DealarCanNotManageManufacturer {
+    description: "Members of the Dealer roles can not manage Manufacturer participants"
+    participant: "org.automobilesupplychain.basic.Dealer"
+    operation: CREATE, UPDATE, DELETE
+	resource: "org.automobilesupplychain.basic.Manufacturer" 
+    action: DENY
+}
+
+rule DealerCanOnlyReadParts {
+    description: "Members of the Dealer can only read parts"
+    participant: "org.automobilesupplychain.basic.Dealer"
+    operation: CREATE, UPDATE, DELETE
+	resource: "org.automobilesupplychain.basic.CarPart"
+    action: DENY
+}
+
+rule DealerCanNotCreateCars {
+    description: "Members of the Dealer can not create cars"
+    participant: "org.automobilesupplychain.basic.Dealer"
+    operation: CREATE
+	resource: "org.automobilesupplychain.basic.Car"
+    action: DENY
+}
+
+rule HotelCanOnlyCreate {
     description: "Allow everybody to do everyhing - do not use in production environment"
     participant: "**"
     operation: ALL
     resource: "**"
     action: ALLOW
 }
-
-
-
