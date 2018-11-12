@@ -6,15 +6,15 @@
 
 # deploy stuff
 
-composer network install --card PeerAdmin@hlfv1 --archiveFile lngsupplychain@0.0.1.bna
+composer network install --card PeerAdmin@hlfv1 --archiveFile automobilesupplychain@0.0.1.bna
 
 # getting deployed full stuff name and version
 
-composer archive list -a lngsupplychain@0.0.1.bna
+composer archive list -a automobilesupplychain@0.0.1.bna
 
 # start business network 
 
-composer network start --networkName lngsupplychain --networkVersion 0.0.2-deploy.32 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file networkadmin.card
+composer network start --networkName automobilesupplychain --networkVersion 0.2.6-deploy.69 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file networkadmin.card
 
 # import network card identity
 
@@ -22,13 +22,13 @@ composer card import --file networkadmin.card
 
 # test if stuffs are cool
 
-composer network ping --card admin@lngsupplychain
+composer network ping --card admin@automobilesupplychain
 
 # rest server
 
 composer-rest-server
 
-(card name admin@lngsupplychain, no namespace, yes test interface, yes event publication, no for the rest)
+(card name admin@automobilesupplychain, no namespace, yes test interface, yes event publication, no for the rest)
 
 # browser test 
 http://localhost:3000/explorer
@@ -37,7 +37,7 @@ http://localhost:3000/explorer
 
 yo hyperledger-composer:angular
 
-(card: admin@lngsupplychain, existing API, no namespace)
+(card: admin@automobilesupplychain, existing API, no namespace)
 
 # starting the network
 
