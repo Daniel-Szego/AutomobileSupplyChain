@@ -92,8 +92,14 @@ enum ColorEnum {
   o GREY
 }
 
+enum CarStatusEnum {
+  o CREATED
+  o SOLD
+}
+
 asset Car extends CARAbstratcAsset {
   o CarTypeEnum carType
+  o CarStatusEnum carStatus
   o ColorEnum color optional
   o String license optional
 }
@@ -171,6 +177,9 @@ event CarSold {
   --> Dealer dealer
   o DateTime date
 }
+
+
+
 
 
 

@@ -246,6 +246,7 @@ async function CreateCarTransaction(tx) {  // eslint-disable-line no-unused-vars
   const car = await factory.newResource(namespace, 'Car', numberOfCars.toString());
   car.carType = manufacturer.carType;
   car.atStage = manufacturer;
+  car.carStatus = "CREATED";
   
   await carReg.add(car);      
   
@@ -312,6 +313,29 @@ async function TransferCarTransaction(tx) {  // eslint-disable-line no-unused-va
 async function SellCarTransaction(tx) {  // eslint-disable-line no-unused-vars
   let car = tx.car;
   let dealer = tx.dealer;
+  
+  // update car status
+  const carReg = await getParticipantRegistry(namespace + '.Car'); 
+  car.carStatus = "SOLD";
+  carReg.update(car);
+  
+  // delete from dealer pool
+  const dealerReg = await getParticipantRegistry(namespace + '.Dealer'); 
+  
+  var carIndex = manufacturer.carStorage.indexOf(car);
+  console.log("INDEX : " + carIndex);
+  if (carIndex > -1) {
+     manufacturer.carStorage.splice(carIndex, 1);
+  }
+  dealerReg.update(dealer);
+
+  // emitting CarPartTransferred event
+    
+  let carSoldEvent = factory.newEvent(namespace, 'CarSold');
+  carSoldEvent.car = car;
+  carSoldEvent.dealer = dealer;
+  carSoldEvent.date = new Date();
+  await emit(carSoldEvent); 
   
 }
 
