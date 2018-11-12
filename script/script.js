@@ -289,7 +289,6 @@ async function TransferCarTransaction(tx) {  // eslint-disable-line no-unused-va
   const manufacturerReg = await getParticipantRegistry(namespace + '.Manufacturer'); 
   
   var carIndex = manufacturer.carStorage.indexOf(car);
-  console.log("INDEX : " + carIndex);
   if (carIndex > -1) {
      manufacturer.carStorage.splice(carIndex, 1);
   }
@@ -314,18 +313,19 @@ async function SellCarTransaction(tx) {  // eslint-disable-line no-unused-vars
   let car = tx.car;
   let dealer = tx.dealer;
   
+  const factory = getFactory(); 
+  
   // update car status
-  const carReg = await getParticipantRegistry(namespace + '.Car'); 
+  const carReg = await getAssetRegistry(namespace + '.Car'); 
   car.carStatus = "SOLD";
   carReg.update(car);
   
   // delete from dealer pool
   const dealerReg = await getParticipantRegistry(namespace + '.Dealer'); 
   
-  var carIndex = manufacturer.carStorage.indexOf(car);
-  console.log("INDEX : " + carIndex);
+  var carIndex = dealer.carStorage.indexOf(car);
   if (carIndex > -1) {
-     manufacturer.carStorage.splice(carIndex, 1);
+     dealer.carStorage.splice(carIndex, 1);
   }
   dealerReg.update(dealer);
 
