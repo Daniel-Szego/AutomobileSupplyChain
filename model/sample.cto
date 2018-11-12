@@ -68,6 +68,7 @@ participant Dealer extends SupplyChainActor {
 
 abstract asset CARAbstratcAsset identified by id {
   o String id
+  o Integer GHG
   --> SupplyChainActor atStage
 }
 
@@ -183,7 +184,5 @@ event CarSold {
   --> Dealer dealer
   o DateTime date
 }
-
-
 
 
