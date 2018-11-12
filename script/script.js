@@ -174,6 +174,7 @@ async function createPartTransaction(tx) {  // eslint-disable-line no-unused-var
   carPart.partType = partType;
   carPart.amount = amount;
   carPart.atStage = atStage;
+  carPart.carPartStatus = "CREATED";
   
   await carPartReg.add(carPart);      
   
@@ -204,7 +205,7 @@ async function TransferPartTransaction(tx) {  // eslint-disable-line no-unused-v
   
   const manufacturerReg = await getParticipantRegistry(namespace + '.Manufacturer'); 
   manufacturer.partStorage.push(carPart);
-  manufacturerReg.update(manufacturer);
+  await manufacturerReg.update(manufacturer);
   
   // emitting CarPartTransferred event
   
@@ -224,9 +225,57 @@ async function TransferPartTransaction(tx) {  // eslint-disable-line no-unused-v
 async function CreateCarTransaction(tx) {  // eslint-disable-line no-unused-vars
    let manufacturer = tx.manufacturer;
   
-   // checking if parts exists
+   // checking if parts exists  
+  const carPartReg = await getAssetRegistry(namespace + '.CarPart');   
+
+  // getting next id
+  let existingCarParts = await carPartReg.getAll();
+  var wheelPart;
+  var enginePart;
+   
+  await existingCarParts.forEach(function (carPart) {
+	if (carPart.partType == "ENGINE") {
+    	enginePart = carPart;
+    }
+	if (carPart.partType == "WHEEL") {
+    	wheelPart = carPart;
+    }     
+  });
+
+  if (!wheelPart) {
+	 throw new Error("Cars must have wheel");
+  }
   
+  if (!enginePart) {
+	 throw new Error("Cars must have engine");
+  }
+   
    // deleting exiting parts
+   wheelPart.carPartStatus = "CONSUMED";
+   await carPartReg.update(wheelPart);
+  
+   enginePart.carPartStatus = "CONSUMED";  
+   await carPartReg.update(enginePart);
+  
+  const manufacturerReg = await getParticipantRegistry(namespace + '.Manufacturer'); 
+  
+  console.log("WHEEL : " + wheelPart.id);
+  console.log("ENGINE : " + enginePart.id);
+  console.log(manufacturer.partStorage);
+    
+  var wheelIndex = await manufacturer.partStorage.indexOf(wheelPart);
+  if (wheelIndex > -1) {
+     manufacturer.partStorage.splice(wheelIndex, 1);
+  }
+  await manufacturerReg.update(manufacturer);
+  
+  var engineIndex = await manufacturer.partStorage.indexOf(enginePart);
+  if (engineIndex > -1) {
+     manufacturer.partStorage.splice(engineIndex, 1);
+  }    
+  console.log("WHEEL : " + wheelIndex);
+  console.log("ENGINE : " + engineIndex);
+  await manufacturerReg.update(manufacturer);
   
    // creating new car
   
@@ -252,9 +301,8 @@ async function CreateCarTransaction(tx) {  // eslint-disable-line no-unused-vars
   
   // putting into the carStorage variable of the manufacturer
   
-  const manufacturerReg = await getParticipantRegistry(namespace + '.Manufacturer'); 
   manufacturer.carStorage.push(car);
-  manufacturerReg.update(manufacturer);
+  await manufacturerReg.update(manufacturer);
   
   // emitting CarPartCreated event
   
@@ -284,7 +332,7 @@ async function TransferCarTransaction(tx) {  // eslint-disable-line no-unused-va
   
   const dealerReg = await getParticipantRegistry(namespace + '.Dealer'); 
   dealer.carStorage.push(car);
-  dealerReg.update(dealer);
+  await dealerReg.update(dealer);
    
   const manufacturerReg = await getParticipantRegistry(namespace + '.Manufacturer'); 
   
@@ -292,7 +340,7 @@ async function TransferCarTransaction(tx) {  // eslint-disable-line no-unused-va
   if (carIndex > -1) {
      manufacturer.carStorage.splice(carIndex, 1);
   }
-  manufacturerReg.update(manufacturer);
+  await manufacturerReg.update(manufacturer);
   
   // emitting CarPartTransferred event
   
@@ -327,7 +375,7 @@ async function SellCarTransaction(tx) {  // eslint-disable-line no-unused-vars
   if (carIndex > -1) {
      dealer.carStorage.splice(carIndex, 1);
   }
-  dealerReg.update(dealer);
+  await dealerReg.update(dealer);
 
   // emitting CarPartTransferred event
     
@@ -338,5 +386,4 @@ async function SellCarTransaction(tx) {  // eslint-disable-line no-unused-vars
   await emit(carSoldEvent); 
   
 }
-
 

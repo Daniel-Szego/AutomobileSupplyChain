@@ -79,9 +79,15 @@ enum CarPartTypeEnum {
   o WINDSHIELD
 }
 
+enum CarPartStatusEnum {
+  o CREATED
+  o CONSUMED
+}
+
 asset CarPart extends CARAbstratcAsset {
   o Integer amount
   o CarPartTypeEnum partType
+  o CarPartStatusEnum carPartStatus
 }
 
 enum ColorEnum {
@@ -177,12 +183,6 @@ event CarSold {
   --> Dealer dealer
   o DateTime date
 }
-
-
-
-
-
-
 
 
 
