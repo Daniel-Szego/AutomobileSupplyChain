@@ -224,6 +224,39 @@ async function TransferPartTransaction(tx) {  // eslint-disable-line no-unused-v
 async function CreateCarTransaction(tx) {  // eslint-disable-line no-unused-vars
    let manufacturer = tx.manufacturer;
   
+   // checking if parts exists
+  
+   // deleting exiting parts
+  
+   // creating new car
+  
+  const factory = getFactory(); 
+
+  const carReg = await getAssetRegistry(namespace + '.Car');   
+
+  // getting next id
+  let existingCars = await carReg.getAll();
+  let numberOfCars = 0;
+  
+  await existingCars.forEach(function (car) {
+    numberOfCars ++;
+  });
+  numberOfCars ++; 	
+
+  const car = await factory.newResource(namespace, 'Car', numberOfCars.toString());
+  car.carType = manufacturer.carType;
+  car.atStage = manufacturer;
+  
+  await carReg.add(car);      
+  
+  // emitting CarPartCreated event
+  
+  let carCreatedEvent = factory.newEvent(namespace, 'CarCreated');
+  carCreatedEvent.car = car;
+  carCreatedEvent.at = manufacturer;
+  carCreatedEvent.date = new Date();
+  await emit(carCreatedEvent);  
+  
 }
 
 /**
@@ -235,7 +268,34 @@ async function TransferCarTransaction(tx) {  // eslint-disable-line no-unused-va
   let car = tx.car;
   let manufacturer = tx.manufacturer;
   let dealer = tx.dealer;
+
+  const factory = getFactory(); 
   
+  const carReg = await getAssetRegistry(namespace + '.Car'); 
+  car.atStage = dealer;
+  carReg.update(car);
+  
+  const dealerReg = await getAssetRegistry(namespace + '.Dealer'); 
+  dealer.carStorage.push(car);
+  dealerReg.update(dealer);
+   
+  const manufacturerReg = await getAssetRegistry(namespace + '.Manufacturer'); 
+  
+  var carIndex = manufacturer.carStorage.indexOf(car);
+  manufacturer.carStorage.push(car);
+  if (carIndex > -1) {
+     manufacturer.carStorage.splice(carIndex, 1);
+  }
+  manufacturerReg.update(manufacturer);
+  
+  // emitting CarPartTransferred event
+  
+  let carTransferredEvent = factory.newEvent(namespace, 'CarTransported');
+  carTransferredEvent.car = car;
+  carTransferredEvent.from = manufacturer;
+  carTransferredEvent.to = dealer;
+  carTransferredEvent.date = new Date();
+  await emit(carTransferredEvent);  	
 }
 
 /**
