@@ -154,6 +154,16 @@
 
             
               <div class="form-group text-left">
+                <label for="GHG">GHG</label>
+                
+                  <input formControlName="GHG" type="number" class="form-control">
+                
+              </div>
+            
+          
+
+            
+              <div class="form-group text-left">
                 <label for="atStage">atStage</label>
                 
                     <textarea formControlName="atStage" class="form-control" rows="3"></textarea>
@@ -335,6 +345,15 @@
             </div>
           
             <div class="form-group text-left">
+              <label for="GHG">GHG</label>
+              
+              
+                <input [ngModel]="GHG" formControlName="GHG" type="number" class="form-control">
+              
+
+            </div>
+          
+            <div class="form-group text-left">
               <label for="atStage">atStage</label>
               
               
@@ -424,6 +443,8 @@
             
                 <th class="info">id</th>
             
+                <th class="info">GHG</th>
+            
                 <th class="info">atStage</th>
             
               <th class="info-actions">Actions</th>
@@ -440,6 +461,8 @@
                 <td class="asset-properties">{{asset.carPartStatus}}</td>
             
                 <td class="asset-properties">{{asset.id}}</td>
+            
+                <td class="asset-properties">{{asset.GHG}}</td>
             
                 <td class="asset-properties">{{asset.atStage}}</td>
             

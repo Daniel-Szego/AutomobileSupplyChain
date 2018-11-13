@@ -39,6 +39,7 @@ import {Event} from './org.hyperledger.composer.system';
    }
    export abstract class CARAbstratcAsset extends Asset {
       id: string;
+      GHG: number;
       atStage: SupplyChainActor;
    }
    export enum CarPartTypeEnum {
@@ -80,7 +81,6 @@ import {Event} from './org.hyperledger.composer.system';
    }
    export class CreatePartTransaction extends Transaction {
       partType: CarPartTypeEnum;
-      amount: number;
       atStage: Supplier;
    }
    export class TransferPartTransaction extends Transaction {

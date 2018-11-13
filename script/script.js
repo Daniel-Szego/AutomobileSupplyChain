@@ -256,18 +256,32 @@ async function CreateCarTransaction(tx) {  // eslint-disable-line no-unused-vars
   
   const manufacturerReg = await getParticipantRegistry(namespace + '.Manufacturer'); 
   
-  console.log("WHEEL : " + wheelPart);
-  console.log("ENGINE : " + enginePart);
+  console.log("WHEEL : " + wheelPart.id);
+  console.log("ENGINE : " + enginePart.id);
   console.log(manufacturer.partStorage);
   console.log(manufacturer.carStorage);
+  
+  var wheelIndex = -1;
+  for (var i = manufacturer.partStorage.length - 1; i >= 0; --i) {
+    if (manufacturer.partStorage[i].$identifier == wheelPart.id) {
+        wheelIndex = i;
+    }
+  }
     
-  var wheelIndex = manufacturer.partStorage.indexOf(wheelPart);
+  //var wheelIndex = manufacturer.partStorage.indexOf(wheelPart);
   if (wheelIndex > -1) {
      manufacturer.partStorage.splice(wheelIndex, 1);
   }
   await manufacturerReg.update(manufacturer);
   
-  var engineIndex = manufacturer.partStorage.indexOf(enginePart);
+  var engineIndex = -1;
+  for (var i = manufacturer.partStorage.length - 1; i >= 0; --i) {
+    if (manufacturer.partStorage[i].$identifier == enginePart.id) {
+        engineIndex = i;
+    }
+  }
+
+  //var engineIndex = manufacturer.partStorage.indexOf(enginePart);
   if (engineIndex > -1) {
      manufacturer.partStorage.splice(engineIndex, 1);
   }    
@@ -388,5 +402,4 @@ async function SellCarTransaction(tx) {  // eslint-disable-line no-unused-vars
   await emit(carSoldEvent); 
   
 }
-
 

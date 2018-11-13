@@ -37,6 +37,7 @@ export class CarComponent implements OnInit {
   color = new FormControl('', Validators.required);
   license = new FormControl('', Validators.required);
   id = new FormControl('', Validators.required);
+  GHG = new FormControl('', Validators.required);
   atStage = new FormControl('', Validators.required);
 
   constructor(public serviceCar: CarService, fb: FormBuilder) {
@@ -46,6 +47,7 @@ export class CarComponent implements OnInit {
       color: this.color,
       license: this.license,
       id: this.id,
+      GHG: this.GHG,
       atStage: this.atStage
     });
   };
@@ -109,6 +111,7 @@ export class CarComponent implements OnInit {
       'color': this.color.value,
       'license': this.license.value,
       'id': this.id.value,
+      'GHG': this.GHG.value,
       'atStage': this.atStage.value
     };
 
@@ -118,6 +121,7 @@ export class CarComponent implements OnInit {
       'color': null,
       'license': null,
       'id': null,
+      'GHG': null,
       'atStage': null
     });
 
@@ -131,6 +135,7 @@ export class CarComponent implements OnInit {
         'color': null,
         'license': null,
         'id': null,
+        'GHG': null,
         'atStage': null
       });
       this.loadAll();
@@ -152,6 +157,7 @@ export class CarComponent implements OnInit {
       'carStatus': this.carStatus.value,
       'color': this.color.value,
       'license': this.license.value,
+      'GHG': this.GHG.value,
       'atStage': this.atStage.value
     };
 
@@ -208,6 +214,7 @@ export class CarComponent implements OnInit {
         'color': null,
         'license': null,
         'id': null,
+        'GHG': null,
         'atStage': null
       };
 
@@ -241,6 +248,12 @@ export class CarComponent implements OnInit {
         formObject.id = null;
       }
 
+      if (result.GHG) {
+        formObject.GHG = result.GHG;
+      } else {
+        formObject.GHG = null;
+      }
+
       if (result.atStage) {
         formObject.atStage = result.atStage;
       } else {
@@ -268,6 +281,7 @@ export class CarComponent implements OnInit {
       'color': null,
       'license': null,
       'id': null,
+      'GHG': null,
       'atStage': null
       });
   }

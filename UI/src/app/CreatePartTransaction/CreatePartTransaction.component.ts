@@ -33,7 +33,6 @@ export class CreatePartTransactionComponent implements OnInit {
   private errorMessage;
 
   partType = new FormControl('', Validators.required);
-  amount = new FormControl('', Validators.required);
   atStage = new FormControl('', Validators.required);
   transactionId = new FormControl('', Validators.required);
   timestamp = new FormControl('', Validators.required);
@@ -42,7 +41,6 @@ export class CreatePartTransactionComponent implements OnInit {
   constructor(private serviceCreatePartTransaction: CreatePartTransactionService, fb: FormBuilder) {
     this.myForm = fb.group({
       partType: this.partType,
-      amount: this.amount,
       atStage: this.atStage,
       transactionId: this.transactionId,
       timestamp: this.timestamp
@@ -104,7 +102,6 @@ export class CreatePartTransactionComponent implements OnInit {
     this.Transaction = {
       $class: 'org.automobilesupplychain.basic.CreatePartTransaction',
       'partType': this.partType.value,
-      'amount': this.amount.value,
       'atStage': this.atStage.value,
       'transactionId': this.transactionId.value,
       'timestamp': this.timestamp.value
@@ -112,7 +109,6 @@ export class CreatePartTransactionComponent implements OnInit {
 
     this.myForm.setValue({
       'partType': null,
-      'amount': null,
       'atStage': null,
       'transactionId': null,
       'timestamp': null
@@ -124,7 +120,6 @@ export class CreatePartTransactionComponent implements OnInit {
       this.errorMessage = null;
       this.myForm.setValue({
         'partType': null,
-        'amount': null,
         'atStage': null,
         'transactionId': null,
         'timestamp': null
@@ -143,7 +138,6 @@ export class CreatePartTransactionComponent implements OnInit {
     this.Transaction = {
       $class: 'org.automobilesupplychain.basic.CreatePartTransaction',
       'partType': this.partType.value,
-      'amount': this.amount.value,
       'atStage': this.atStage.value,
       'timestamp': this.timestamp.value
     };
@@ -194,7 +188,6 @@ export class CreatePartTransactionComponent implements OnInit {
       this.errorMessage = null;
       const formObject = {
         'partType': null,
-        'amount': null,
         'atStage': null,
         'transactionId': null,
         'timestamp': null
@@ -204,12 +197,6 @@ export class CreatePartTransactionComponent implements OnInit {
         formObject.partType = result.partType;
       } else {
         formObject.partType = null;
-      }
-
-      if (result.amount) {
-        formObject.amount = result.amount;
-      } else {
-        formObject.amount = null;
       }
 
       if (result.atStage) {
@@ -247,7 +234,6 @@ export class CreatePartTransactionComponent implements OnInit {
   resetForm(): void {
     this.myForm.setValue({
       'partType': null,
-      'amount': null,
       'atStage': null,
       'transactionId': null,
       'timestamp': null

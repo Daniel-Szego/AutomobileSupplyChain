@@ -36,6 +36,7 @@ export class CarPartComponent implements OnInit {
   partType = new FormControl('', Validators.required);
   carPartStatus = new FormControl('', Validators.required);
   id = new FormControl('', Validators.required);
+  GHG = new FormControl('', Validators.required);
   atStage = new FormControl('', Validators.required);
 
   constructor(public serviceCarPart: CarPartService, fb: FormBuilder) {
@@ -44,6 +45,7 @@ export class CarPartComponent implements OnInit {
       partType: this.partType,
       carPartStatus: this.carPartStatus,
       id: this.id,
+      GHG: this.GHG,
       atStage: this.atStage
     });
   };
@@ -106,6 +108,7 @@ export class CarPartComponent implements OnInit {
       'partType': this.partType.value,
       'carPartStatus': this.carPartStatus.value,
       'id': this.id.value,
+      'GHG': this.GHG.value,
       'atStage': this.atStage.value
     };
 
@@ -114,6 +117,7 @@ export class CarPartComponent implements OnInit {
       'partType': null,
       'carPartStatus': null,
       'id': null,
+      'GHG': null,
       'atStage': null
     });
 
@@ -126,6 +130,7 @@ export class CarPartComponent implements OnInit {
         'partType': null,
         'carPartStatus': null,
         'id': null,
+        'GHG': null,
         'atStage': null
       });
       this.loadAll();
@@ -146,6 +151,7 @@ export class CarPartComponent implements OnInit {
       'amount': this.amount.value,
       'partType': this.partType.value,
       'carPartStatus': this.carPartStatus.value,
+      'GHG': this.GHG.value,
       'atStage': this.atStage.value
     };
 
@@ -201,6 +207,7 @@ export class CarPartComponent implements OnInit {
         'partType': null,
         'carPartStatus': null,
         'id': null,
+        'GHG': null,
         'atStage': null
       };
 
@@ -226,6 +233,12 @@ export class CarPartComponent implements OnInit {
         formObject.id = result.id;
       } else {
         formObject.id = null;
+      }
+
+      if (result.GHG) {
+        formObject.GHG = result.GHG;
+      } else {
+        formObject.GHG = null;
       }
 
       if (result.atStage) {
@@ -254,6 +267,7 @@ export class CarPartComponent implements OnInit {
       'partType': null,
       'carPartStatus': null,
       'id': null,
+      'GHG': null,
       'atStage': null
       });
   }
