@@ -150,13 +150,8 @@ async function deleteAllDataTransaction(tx) {  // eslint-disable-line no-unused-
  */
 async function createPartTransaction(tx) {  // eslint-disable-line no-unused-vars
   let partType = tx.partType;
-  let amount = tx.amount;
   let atStage = tx.atStage;
-  
-  if (amount < 1) {
-  	throw new Error("The amount to be created must be greater than zero");
-  }
-  
+    
   const factory = getFactory(); 
 
   const carPartReg = await getAssetRegistry(namespace + '.CarPart');   
@@ -172,7 +167,7 @@ async function createPartTransaction(tx) {  // eslint-disable-line no-unused-var
 
   const carPart = await factory.newResource(namespace, 'CarPart', numberOfCarParts.toString());
   carPart.partType = partType;
-  carPart.amount = amount;
+  carPart.amount = 1;
   carPart.atStage = atStage;
   carPart.GHG = atStage.GHG;
   carPart.carPartStatus = "CREATED";
@@ -393,6 +388,5 @@ async function SellCarTransaction(tx) {  // eslint-disable-line no-unused-vars
   await emit(carSoldEvent); 
   
 }
-
 
 
